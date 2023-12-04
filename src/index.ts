@@ -23,13 +23,13 @@ declare module 'koishi' {
 
 export interface Config {
   敏感词: string[]
-  图片: boolean
+  禁止图片: boolean
 }
 
 export const Config: Schema<Config> = Schema.object({
   敏感词:Schema.array(Schema.string())
     .description("禁止发送的文字，支持正则表达式"),
-  图片:Schema.boolean()
+  禁止图片:Schema.boolean()
     .description("是否禁止发送图片")
     .default(false)
 
@@ -86,7 +86,7 @@ export function apply(ctx: Context, config: Config) {
       for (let i of config.敏感词) {
         if (new RegExp(`${i}`).test(message)) return h("quote", session.event.message.id) + "你发送的文本包含禁止发送的内容"
       }
-      if (config.图片 && message.includes('<image url="')) return h("quote", session.event.message.id) + "禁止发送图片"
+      if (config.禁止图片 && message.includes('<image url="')) return h("quote", session.event.message.id) + "禁止发送图片"
 
       await session.bot.sendMessage(current[session.event.user.id].guildId, `【匿名消息】用户：${current[session.event.user.id].anonymousId}\n${message}`)
       return h("quote", session.event.message.id) + "发送成功"
