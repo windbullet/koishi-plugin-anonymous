@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-anonymous",
-  "description": "匿名发送消息，由机器人代发",
-  "version": "0.0.1",
+  "description": "由机器人代发你的匿名消息",
+  "version": "0.1.0",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -16,6 +16,13 @@
     "plugin"
   ],
   "peerDependencies": {
-    "koishi": "4.15.6"
+    "koishi": "^4.15.6"
+  },
+  "koishi": {
+    "service": {
+      "required": ["database"],    
+      "optional": [],       
+      "implements": []
+    }
   }
 }
