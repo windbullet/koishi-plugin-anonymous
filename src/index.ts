@@ -47,7 +47,7 @@ export function apply(ctx: Context, config: Config) {
       for await (let i of session.bot.getGuildIter()) {
         if (i.id === guildId) flag = true
       }
-      if (!flag) return h("quote", session.event.message.id) + "仅能在机器人所在的群聊发送匿名消息"
+      if (!flag) return h("quote", {id: session.event.message.id}) + "仅能在机器人所在的群聊发送匿名消息"
       let data = await ctx.database.get('anonymousData', {
         userId: session.userId,
         guildId: guildId
@@ -74,22 +74,22 @@ export function apply(ctx: Context, config: Config) {
         }
       }
 
-      return h("quote", session.event.message.id) + `设置成功，你在该群的匿名ID为 ${current[session.event.user.id].anonymousId}`
+      return h("quote", {id: session.event.message.id}) + `设置成功，你在该群的匿名ID为 ${current[session.event.user.id].anonymousId}`
 
     })
 
   ctx.private().command('匿名消息.发送 <message:text>').alias("发送匿名消息")
     .action(async ({session}, message) => {
       if (current[session.event.user.id] === undefined) {
-        return h("quote", session.event.message.id) + "你还没有设置群聊，请使用指令：匿名消息.设置群聊 <群聊ID>"
+        return h("quote", {id: session.event.message.id}) + "你还没有设置群聊，请使用指令：匿名消息.设置群聊 <群聊ID>"
       }
       for (let i of config.敏感词) {
-        if (new RegExp(`${i}`).test(message)) return h("quote", session.event.message.id) + "你发送的文本包含禁止发送的内容"
+        if (new RegExp(`${i}`).test(message)) return h("quote", {id: session.event.message.id}) + "你发送的文本包含禁止发送的内容"
       }
-      if (config.禁止图片 && message.includes('<image url="')) return h("quote", session.event.message.id) + "禁止发送图片"
+      if (config.禁止图片 && message.includes('<image url="')) return h("quote", {id: session.event.message.id}) + "禁止发送图片"
 
       await session.bot.sendMessage(current[session.event.user.id].guildId, `【匿名消息】用户：${current[session.event.user.id].anonymousId}\n${message}`)
-      return h("quote", session.event.message.id) + "发送成功"
+      return h("quote", {id: session.event.message.id}) + "发送成功"
     })
 
 }

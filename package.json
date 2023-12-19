@@ -1,7 +1,7 @@
 {
   "name": "koishi-plugin-anonymous",
   "description": "由机器人代发你的匿名消息",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
